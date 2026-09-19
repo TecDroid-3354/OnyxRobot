@@ -7,7 +7,10 @@ class Intake (hardwareMap: HardwareMap) {
 
     private val intakeMotor : MotorEx
 
+
+
     init {
         intakeMotor = MotorEx(hardwareMap, IntakeConstants.identification.intakeMotorId)
+
     }
 }
