@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystems.ShooterFlicker
 
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.seattlesolvers.solverslib.command.Command
+import com.seattlesolvers.solverslib.command.InstantCommand
 import com.seattlesolvers.solverslib.hardware.motors.CRServoEx
 
 class ShooterFlicker(hardwareMap: HardwareMap) {
@@ -21,5 +23,14 @@ class ShooterFlicker(hardwareMap: HardwareMap) {
 
     fun closeShooterFlicker() {
         shooterFlicker.set(0.0)
+    }
+
+
+    fun openShooterFlickerCMD(): Command {
+        return InstantCommand({openShooterFlicker()})
+    }
+
+    fun closeShooterFlickerCMD(): Command {
+        return InstantCommand({closeShooterFlicker()})
     }
 }

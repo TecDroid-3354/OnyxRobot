@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystems.Indexer
 
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.seattlesolvers.solverslib.command.Command
+import com.seattlesolvers.solverslib.command.InstantCommand
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx
 
 class Indexer(hardwareMap: HardwareMap) {
@@ -25,5 +27,18 @@ class Indexer(hardwareMap: HardwareMap) {
 
     fun reverseIndexer () {
         indexerMotor.set(-1.0)
+    }
+
+
+    fun enableIndexerCMD (): Command {
+        return InstantCommand({enableIndexer()})
+    }
+
+    fun disableIndexerCMD (): Command {
+        return InstantCommand({disableIndexer()})
+    }
+
+    fun reverseIndexerCMD (): Command {
+        return InstantCommand({reverseIndexer()})
     }
 }

@@ -1,4 +1,43 @@
 package org.firstinspires.ftc.teamcode.subsystems.Shooter
 
-class Shooter {
+import com.qualcomm.robotcore.hardware.HardwareMap
+import com.seattlesolvers.solverslib.command.Command
+import com.seattlesolvers.solverslib.command.InstantCommand
+import com.seattlesolvers.solverslib.command.RunCommand
+import com.seattlesolvers.solverslib.hardware.motors.MotorEx
+import org.firstinspires.ftc.teamcode.utils.AngularVelocity
+
+class Shooter (hardwareMap: HardwareMap) {
+
+    private val shooterMotor: MotorEx
+
+    init {
+        shooterMotor = MotorEx(hardwareMap, ShooterConstants.identification.shooterMotorId)
+
+        shooterMotor.setInverted(ShooterConstants.configuration.isSooterMotorInverted)
+        shooterMotor.setRunMode(ShooterConstants.configuration.shooterMotorMode)
+        shooterMotor.setZeroPowerBehavior(ShooterConstants.configuration.shooterMotorZeroBeheavior)
+    }
+
+    fun setShooterVelocity(velocity: AngularVelocity) {
+        shooterMotor.velocity = velocity.rps * 28
+    }
+
+    fun stopShooter() {
+        shooterMotor.set(0.0)
+    }
+    //this will not have CMD because we are going to return the shooter's velocity to print it
+    fun getVelocity(): AngularVelocity {
+        return AngularVelocity.fromRps(shooterMotor.velocity/28)//Change formula to solve gear ratio
+    }
+
+    fun setShooterVelocityCMD(velocity: AngularVelocity): Command {
+        return RunCommand({setShooterVelocity(velocity)})
+    }
+
+    fun stopShooterCMD(): Command {
+        return InstantCommand({stopShooter()})
+    }
+
+
 }

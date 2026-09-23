@@ -9,7 +9,7 @@ object ShooterFlickerConstants {
     }
 
     object configuration {
-        val isShooterFlickerInverted = false
-        val shooterFlickerMode = CRServoEx.RunMode.RawPower
+        val isShooterFlickerInverted = false //update later pls
+        val shooterFlickerMode = CRServoEx.RunMode.OptimizedPositionalControl
     }
 }

@@ -9,7 +9,7 @@ object IndexerConstants {
     }
 
     object configuration {
-        val isIndexMotorInverted = false
+        val isIndexMotorInverted = false //Update later pls
         val indexMotorMode = Motor.RunMode.RawPower
         val indexMotorZeroBeheavior = Motor.ZeroPowerBehavior.FLOAT
     }
