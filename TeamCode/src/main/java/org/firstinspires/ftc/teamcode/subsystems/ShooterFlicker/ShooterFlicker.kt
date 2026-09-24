@@ -3,18 +3,17 @@ package org.firstinspires.ftc.teamcode.subsystems.ShooterFlicker
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.seattlesolvers.solverslib.command.Command
 import com.seattlesolvers.solverslib.command.InstantCommand
-import com.seattlesolvers.solverslib.hardware.motors.CRServoEx
+import com.seattlesolvers.solverslib.hardware.servos.ServoEx
 
 class ShooterFlicker(hardwareMap: HardwareMap) {
 
-    private var shooterFlicker: CRServoEx
+    private var shooterFlicker: ServoEx
 
     init {
         shooterFlicker =
-            CRServoEx(hardwareMap, ShooterFlickerConstants.identification.shooterFlickerId)
+            ServoEx(hardwareMap, ShooterFlickerConstants.identification.shooterFlickerId)
 
         shooterFlicker.setInverted(ShooterFlickerConstants.configuration.isShooterFlickerInverted)
-        shooterFlicker.setRunMode(ShooterFlickerConstants.configuration.shooterFlickerMode)
     }
 
     fun openShooterFlicker() {

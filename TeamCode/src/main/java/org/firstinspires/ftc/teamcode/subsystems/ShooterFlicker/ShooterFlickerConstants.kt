@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.ShooterFlicker
 
-import com.seattlesolvers.solverslib.hardware.motors.CRServoEx
+import com.seattlesolvers.solverslib.hardware.servos.ServoEx
 
 object ShooterFlickerConstants {
 
@@ -10,6 +10,5 @@ object ShooterFlickerConstants {
 
     object configuration {
         val isShooterFlickerInverted = false //update later pls
-        val shooterFlickerMode = CRServoEx.RunMode.OptimizedPositionalControl
     }
 }

@@ -19,7 +19,11 @@ class Shooter (hardwareMap: HardwareMap) {
         shooterMotor.setZeroPowerBehavior(ShooterConstants.configuration.shooterMotorZeroBeheavior)
     }
 
-    fun setShooterVelocity(velocity: AngularVelocity) {
+    fun shoot () {
+        shooterMotor.velocity = 28 * 5000.0
+    }
+
+    fun calibrateShooter(velocity: AngularVelocity) {
         shooterMotor.velocity = velocity.rps * 28
     }
 
@@ -31,8 +35,13 @@ class Shooter (hardwareMap: HardwareMap) {
         return AngularVelocity.fromRps(shooterMotor.velocity/28)//Change formula to solve gear ratio
     }
 
+
+    fun shootCMD(): Command {
+        return InstantCommand({shoot()})
+    }
+
     fun setShooterVelocityCMD(velocity: AngularVelocity): Command {
-        return RunCommand({setShooterVelocity(velocity)})
+        return RunCommand({calibrateShooter(velocity)})
     }
 
     fun stopShooterCMD(): Command {
