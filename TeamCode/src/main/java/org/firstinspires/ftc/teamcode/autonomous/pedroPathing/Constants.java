@@ -5,9 +5,12 @@ import com.pedropathing.algorithm.ForesightConfig;
 import com.pedropathing.controllers.Controller;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Matrix;
+import com.pedropathing.math.Pose;
 import com.pedropathing.math.Vector2D;
 import com.pedropathing.revhub.drivetrains.Mecanum;
 import com.pedropathing.revhub.drivetrains.MecanumConfig;
+import com.pedropathing.revhub.localizers.OTOSConfig;
+import com.pedropathing.revhub.localizers.OTOSLocalizer;
 import com.pedropathing.revhub.localizers.PinpointConfig;
 import com.pedropathing.revhub.localizers.PinpointLocalizer;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
@@ -29,20 +32,23 @@ import java.util.Optional;
 public class Constants {
 
     public static MecanumConfig drivetrainConfig = PedroPathing.INSTANCE.createMecanumConfig(
-            Optional.empty(),
-            Optional.empty(),
-            Optional.empty(),
-            Optional.empty(),
-            Optional.empty(),
-            Optional.empty()
+            Optional.of(DcMotorSimple.Direction.FORWARD),
+            Optional.of(DcMotorSimple.Direction.REVERSE),
+            Optional.of(DcMotorSimple.Direction.FORWARD),
+            Optional.of(DcMotorSimple.Direction.REVERSE),
+            Optional.of(MecanumConstants.Control.IS_BRAKE_MODE),
+            Optional.of(0.99)
     );
 
-    public static PinpointConfig localizerConfig = PedroPathing.INSTANCE.createPinpointConfig(
-            Optional.of(GoBildaPinpointDriver.EncoderDirection.FORWARD),
-            Optional.of(GoBildaPinpointDriver.EncoderDirection.FORWARD),
-            Optional.of(Distance.fromInches(3.225225613811823)),
-            Optional.of(Distance.fromInches(-6.087658499169537))
+    public static OTOSConfig otosConfig = new OTOSConfig(
+            config -> {
+                config.name.set("otos");
+                config.linearScalar.set(0.9566575);
+                config.angularScalar.set(0.99374875);
+                config.offset.set(new Pose(0.75, 0.0, Math.PI/2));
+            }
     );
+
 
 
     public static ForesightConfig foresightConfig = PedroPathing.INSTANCE.createForesightConfig(
@@ -64,7 +70,7 @@ public class Constants {
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new Follower(
-                new PinpointLocalizer(hardwareMap, localizerConfig),
+                new OTOSLocalizer(hardwareMap, otosConfig),
                 new Mecanum(hardwareMap, drivetrainConfig),
                 new Foresight(foresightConfig)
         );

@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode.autonomous.pedroPathing;
 
 import com.pedropathing.algorithm.Foresight;
 import com.pedropathing.revhub.drivetrains.Mecanum;
+import com.pedropathing.revhub.localizers.OTOSLocalizer;
 import com.pedropathing.revhub.localizers.PinpointLocalizer;
 import com.pedropathing.tuning.autotune.Procedure;
 import com.pedropathing.tuning.autotune.Tuner;
 
 import org.firstinspires.ftc.teamcode.autonomous.pedroPathing.procedures.ForesightTuner;
 import org.firstinspires.ftc.teamcode.autonomous.pedroPathing.procedures.MecanumTuner;
+import org.firstinspires.ftc.teamcode.autonomous.pedroPathing.procedures.OTOSTuner;
 import org.firstinspires.ftc.teamcode.autonomous.pedroPathing.procedures.PinpointTuner;
 import org.firstinspires.ftc.teamcode.autonomous.pedroPathing.procedures.Tests;
 
@@ -29,14 +31,14 @@ public class Tuning {
     }
 
     @Tuner
-    public static Procedure pinpointTuner() {
-        return new PinpointTuner();
+    public static Procedure otosTuner() {
+        return new OTOSTuner();
     }
 
     @Tuner
     public static Procedure foresightTuner() {
         return new ForesightTuner(
-                hardwareMap -> new PinpointLocalizer(hardwareMap, Constants.localizerConfig),
+                hardwareMap -> new OTOSLocalizer(hardwareMap, Constants.otosConfig),
                 hardwareMap -> new Mecanum(hardwareMap, Constants.drivetrainConfig)
         );
     }
@@ -45,7 +47,7 @@ public class Tuning {
     public static Procedure tests() {
         return new Tests(
                 hardwareMap -> new Mecanum(hardwareMap, Constants.drivetrainConfig),
-                hardwareMap -> new PinpointLocalizer(hardwareMap, Constants.localizerConfig),
+                hardwareMap -> new OTOSLocalizer(hardwareMap, Constants.otosConfig),
                 () -> new Foresight(Constants.foresightConfig)
         );
     }

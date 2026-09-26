@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode
 import com.pedropathing.follower.Follower
 import com.pedropathing.math.Pose
 import com.pedropathing.paths.Path
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.seattlesolvers.solverslib.command.Command
 import com.seattlesolvers.solverslib.command.RunCommand
@@ -24,6 +25,8 @@ class Robot(
     /* Declare your Pedro Pathing's Follower here */
     private lateinit var follower: Follower
     /* Declare your subsystems here */
+
+    private lateinit var otos : SparkFunOTOS
     private lateinit var drive: Mecanum
 
     init {
@@ -36,6 +39,8 @@ class Robot(
         follower = Constants.createFollower(hardwareMap)
         // Subsystem initialization
         drive = Mecanum(follower, controller, alliance)
+
+        otos = hardwareMap.get(SparkFunOTOS::class.java,"otos")
     }
 
     /* Runs indefinitely after the init button on the DS is pressed. Stops when play button is pressed */
@@ -79,6 +84,10 @@ class Robot(
      * Runs inside the main loop of the robot. Print telemetry ONLY.
      */
     override fun printTelemetry() {
+        pTelemetry.addData("otos x", otos.position.x)
+        pTelemetry.addData("otos y", otos.position.y)
+        pTelemetry.addData("otos heading", otos.position.h)
+
         pTelemetry.update()
     }
 
