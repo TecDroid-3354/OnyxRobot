@@ -15,11 +15,7 @@ import com.seattlesolvers.solverslib.geometry.Vector2d
 import com.seattlesolvers.solverslib.kinematics.wpilibkinematics.ChassisSpeeds
 import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
-import org.firstinspires.ftc.teamcode.autonomous.paths.examplePaths.Line
-import org.firstinspires.ftc.teamcode.constants.DriveMultipliers
 import org.firstinspires.ftc.teamcode.utils.Alliance
-import org.firstinspires.ftc.teamcode.utils.extensions.h
-import org.firstinspires.ftc.teamcode.utils.extensions.toPose2D
 import org.firstinspires.ftc.teamcode.utils.extensions.toPose2d
 import org.firstinspires.ftc.teamcode.utils.units.Angle
 import org.firstinspires.ftc.teamcode.utils.units.Distance
@@ -48,9 +44,9 @@ class Mecanum(
     fun driveFollowingDriverInput(): Command {
         return RunCommand({
             val fieldCentricDrive = ManualDrive.fieldCentric(
-                -controller.leftY * DriveMultipliers.FORWARD_VELOCITY_MULTIPLIER * alliance.multiplier,
-                controller.leftX * DriveMultipliers.LATERAL_VELOCITY_MULTIPLIER * alliance.multiplier,
-                controller.rightX * DriveMultipliers.TURN_VELOCITY_MULTIPLIER,
+                -controller.leftY * MecanumConstants.Control.FORWARD_VELOCITY_MULTIPLIER * alliance.multiplier,
+                controller.leftX * MecanumConstants.Control.LATERAL_VELOCITY_MULTIPLIER * alliance.multiplier,
+                controller.rightX * MecanumConstants.Control.TURN_VELOCITY_MULTIPLIER,
                 follower.pose().heading()
             )
 

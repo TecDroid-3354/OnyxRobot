@@ -9,8 +9,6 @@ import com.seattlesolvers.solverslib.command.RunCommand
 import com.seattlesolvers.solverslib.gamepad.GamepadEx
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.autonomous.pedroPathing.Constants
-import org.firstinspires.ftc.teamcode.constants.SubsystemConfigurableTargets
-import org.firstinspires.ftc.teamcode.constants.SubsystemControlGains
 import org.firstinspires.ftc.teamcode.subsystems.mecanum.Mecanum
 import org.firstinspires.ftc.teamcode.utils.Alliance
 import org.firstinspires.ftc.teamcode.utils.TecDroidRobot
@@ -27,8 +25,6 @@ class Robot(
     private lateinit var follower: Follower
     /* Declare your subsystems here */
     private lateinit var drive: Mecanum
-
-    private var hola = 0.0
 
     init {
         subsystemInitialization()
@@ -62,9 +58,7 @@ class Robot(
     /**
      * Runs periodically, useful for updating variables or configurables.
      */
-    override fun loopTeleOp() {
-        RunCommand({ hola = SubsystemConfigurableTargets.INDEXER_CONFIGURABLE_RPM }).schedule()
-    }
+    override fun loopTeleOp() {}
 
     /**
      * Runs once when init is pressed during auto.
@@ -85,13 +79,6 @@ class Robot(
      * Runs inside the main loop of the robot. Print telemetry ONLY.
      */
     override fun printTelemetry() {
-        pTelemetry.addData("PID Rollers", SubsystemControlGains.INTAKE_ROLLERS_MOTOR_PID)
-        pTelemetry.addData("PID deploy", SubsystemControlGains.INTAKE_DEPLOY_SERVOS_PIDF)
-        pTelemetry.addData("PID turret", SubsystemControlGains.TURRET_SERVOS_PIDF)
-        pTelemetry.addData("Rollers target", SubsystemConfigurableTargets.INTAKE_ROLLERS_CONFIGURABLE_RPM)
-        pTelemetry.addData("Deploy target", SubsystemConfigurableTargets.INTAKE_DEPLOY_CONFIGURABLE_DEGREES)
-        pTelemetry.addData("Indexer rpm", SubsystemConfigurableTargets.INDEXER_CONFIGURABLE_RPM)
-        pTelemetry.addData("Hola", hola)
         pTelemetry.update()
     }
 

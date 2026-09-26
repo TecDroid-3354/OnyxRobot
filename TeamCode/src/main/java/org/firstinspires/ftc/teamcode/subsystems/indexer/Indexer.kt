@@ -1,70 +1,44 @@
-package org.firstinspires.ftc.teamcode.subsystems.indexer
+package org.firstinspires.ftc.teamcode.subsystems.Indexer
 
-import com.bylazar.telemetry.TelemetryManager
 import com.qualcomm.robotcore.hardware.HardwareMap
-import com.qualcomm.robotcore.hardware.PIDCoefficients
 import com.seattlesolvers.solverslib.command.Command
-import com.seattlesolvers.solverslib.command.SubsystemBase
-import com.seattlesolvers.solverslib.controller.wpilibcontroller.SimpleMotorFeedforward
-import org.firstinspires.ftc.teamcode.constants.SubsystemConfigurableTargets
-import org.firstinspires.ftc.teamcode.constants.SubsystemControlGains
-import org.firstinspires.ftc.teamcode.constants.SubsystemLimits
-import org.firstinspires.ftc.teamcode.constants.SubsystemPresetTargets
-import org.firstinspires.ftc.teamcode.utils.devices.OpMotorEx
-import org.firstinspires.ftc.teamcode.utils.devices.configurations.motorControlModeConfiguration.MotorVelocityModeConfiguration
-import org.firstinspires.ftc.teamcode.utils.extensions.InstantCommand
-import org.firstinspires.ftc.teamcode.utils.units.AngularVelocity
+import com.seattlesolvers.solverslib.command.InstantCommand
+import com.seattlesolvers.solverslib.hardware.motors.MotorEx
 
-@Suppress("JoinDeclarationAndAssignment")
-class Indexer(hardwareMap: HardwareMap): SubsystemBase() {
+class Indexer(hardwareMap: HardwareMap) {
+    private val indexerMotor : MotorEx
 
-    private var indexerMotor: OpMotorEx
-
-    private var indexerTargetVelocity: AngularVelocity = AngularVelocity(0.0)
 
     init {
-        indexerMotor = OpMotorEx(hardwareMap, IndexerConstants.Identification.INDEXER_MOTOR_ID)
-        indexerMotor.applyConfigurationAndResetEncoder(IndexerConstants.Configuration.indexerConfiguration)
+        indexerMotor = MotorEx(hardwareMap, IndexerConstants.identification.indexerMotorId)
+
+        indexerMotor.setInverted(IndexerConstants.configuration.isIndexMotorInverted)
+        indexerMotor.setRunMode(IndexerConstants.configuration.indexMotorMode)
+        indexerMotor.setZeroPowerBehavior(IndexerConstants.configuration.indexMotorZeroBeheavior)
     }
 
-    override fun periodic() {
-        if (indexerMotor.hadVelocityPIDControlGainsUpdated(SubsystemControlGains.INDEXER_MOTOR_PID)
-            || indexerMotor.hadVelocityFeedforwardControlGainsUpdated(SubsystemControlGains.INDEXER_MOTOR_FEEDFORWARD)) {
-            updateIndexerMotorControlGains(SubsystemControlGains.INDEXER_MOTOR_PID, SubsystemControlGains.INDEXER_MOTOR_FEEDFORWARD)
-        }
+    fun enableIndexer () {
+        indexerMotor.set(1.0)
     }
 
-    private fun updateIndexerMotorControlGains(pidCoefficients: PIDCoefficients, feedforward: SimpleMotorFeedforward) {
-        val newConfig = MotorVelocityModeConfiguration()
-            .withVelocityCoefficients(pidCoefficients)
-            .withFeedforwardCoefficients(feedforward)
-
-        indexerMotor.applyModeConfiguration(newConfig)
+    fun disableIndexer () {
+        indexerMotor.set(0.0)
     }
 
-    private fun enableIndexerWithVelocity(velocity: AngularVelocity): Runnable {
-        return {
-            indexerTargetVelocity = velocity.coerceIn(SubsystemLimits.INDEXER_MAX_VELOCITY)
-
-            indexerMotor.setVelocity(velocity)
-        }
+    fun reverseIndexer () {
+        indexerMotor.set(-1.0)
     }
 
-    fun enableIndexerShootingVelocity(): Command {
-        return enableIndexerWithVelocity(SubsystemPresetTargets.INDEXER_PRESET_SHOOTING_RPM).InstantCommand(this)
+
+    fun enableIndexerCMD (): Command {
+        return InstantCommand({enableIndexer()})
     }
 
-    fun enableIndexerConfigurableVelocity(): Command {
-        return enableIndexerWithVelocity(AngularVelocity.fromRpm(SubsystemConfigurableTargets.INDEXER_CONFIGURABLE_RPM)).InstantCommand(this)
+    fun disableIndexerCMD (): Command {
+        return InstantCommand({disableIndexer()})
     }
 
-    fun stopIndexer(): Command {
-        return indexerMotor.stopMotor().InstantCommand(this)
-    }
-
-    fun log(telemetry: TelemetryManager) {
-        telemetry.addLine("Indexer")
-        telemetry.addData("Indexer Velocity RPM", indexerMotor.getVelocity().get().rpm)
-        telemetry.addData("Indexer Target Velocity RPM", indexerMotor.getVelocity().get().rpm)
+    fun reverseIndexerCMD (): Command {
+        return InstantCommand({reverseIndexer()})
     }
 }

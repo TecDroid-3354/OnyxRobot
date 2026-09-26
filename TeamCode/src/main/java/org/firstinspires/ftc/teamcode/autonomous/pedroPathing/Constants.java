@@ -29,12 +29,12 @@ import java.util.Optional;
 public class Constants {
 
     public static MecanumConfig drivetrainConfig = PedroPathing.INSTANCE.createMecanumConfig(
-            Optional.of(DcMotorSimple.Direction.FORWARD),
-            Optional.of(DcMotorSimple.Direction.REVERSE),
-            Optional.of(DcMotorSimple.Direction.FORWARD),
-            Optional.of(DcMotorSimple.Direction.REVERSE),
-            Optional.of(MecanumConstants.Control.IS_BRAKE_MODE),
-            Optional.of(0.01)
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty()
     );
 
     public static PinpointConfig localizerConfig = PedroPathing.INSTANCE.createPinpointConfig(
